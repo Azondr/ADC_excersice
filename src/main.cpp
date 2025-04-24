@@ -1,18 +1,18 @@
 #include <Arduino.h>
 
-// put function declarations here:
-int myFunction(int, int);
+const int potPin = A0;  // Potentiometer an A0
+const float referenceVoltage = 5.0;  // Standardmäßig 5V für Uno
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(9600);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
+  int analogValue = analogRead(potPin);
+  float voltage = (analogValue / 1023.0) * referenceVoltage;
+  Serial.print("Potentiometer analog value = ");
+  Serial.print(voltage, 2);  // 2 Nachkommastellen
+  Serial.println(" V");
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  delay(500);  // 0.5 Sekunden warten
 }
