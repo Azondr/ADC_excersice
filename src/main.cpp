@@ -1,17 +1,22 @@
+//Aziz Önder
+//ADC Excercise
+
+
 #include <Arduino.h>
+const int poti = A0;  // Potentiometer  A0
 
-const int potPin = A0;  // Potentiometer an A0
-const float referenceVoltage = 5.0;  // Standardmäßig 5V für Uno
 
-void setup() {
+void setup() 
+{
   Serial.begin(9600);
 }
 
-void loop() {
-  int analogValue = analogRead(potPin);
-  float voltage = (analogValue / 1023.0) * referenceVoltage;
+void loop() 
+{
+  int analogWert = analogRead(poti);
+  float Spannung = (analogWert / 1023.0) * 5;
   Serial.print("Potentiometer analog value = ");
-  Serial.print(voltage, 2);  // 2 Nachkommastellen
+  Serial.print(Spannung); 
   Serial.println(" V");
 
   delay(500);  // 0.5 Sekunden warten
