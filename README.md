@@ -27,7 +27,7 @@ Bits 3:0 – MUX3:0: Analog Channel Selection Bits
 
  ADSC - Muss man sezten damit eine ADC Konvertierung beginnt
 
-## Interrupt-basierte Auswertung (optional)
+## Interrupt-Auswertung
 
  ADIE - Muss man setzen damit der Interrupt aktiviert wird
  ADCL oder ADLAR - Wenn die konvertierung fertig ist, findet man hier das ergebnis
