@@ -28,7 +28,7 @@ void loop()
   while((ADCSRA & (1 << ADSC)) != 0);   // ADSC is cleared when conversion is completed
   int Poti_Value = ADC
 
-  float Voltage = (Poti_Value / 1023.0) * 5;
+  float Voltage = (Poti_Value * 5.0) / 1023;
   Serial.print("Potentiometer analog value = ");
   Serial.print(Voltage); 
   Serial.println(" V");
