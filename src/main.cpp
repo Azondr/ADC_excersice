@@ -19,13 +19,16 @@ void setup()
   // set internal 5V reference
   ADMUX |= (1 << REFS0);
 
+
 }
 
 void loop() 
 {
   //int poti_value = analogRead(A0);
-  ADCSRA |= (1 << ADSC);                // start ADC conversion
-  while((ADCSRA & (1 << ADSC)) != 0);   // ADSC is cleared when conversion is completed
+  ADCSRA |= (1 << ADSC);                      // start ADC conversion
+  while((ADCSRA & (1 << ADSC)) != 0);         // ADSC is cleared when conversion is completed
+  ADCSRA |= (1 << ADIE) | (1 << ADIF);        // enable Interrupt and set the Interrupt Flag
+
   int Poti_Value = ADC
 
   float Voltage = (Poti_Value * 5.0) / 1023;
