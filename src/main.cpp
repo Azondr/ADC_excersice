@@ -51,6 +51,6 @@ ISR(ADC_vect)           //Triggers automatically if Interrupt Flag is set
   if (counter >= 30)    // Trigger every 500ms
   {
     Poti_Value = ADC;            
-    value_ready = true;   // value_ready is set true, so that he programm can loop
+    value_ready = true;   // value_ready is set true, so that the programm can loop
   }
 }
