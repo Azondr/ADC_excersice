@@ -1,56 +1,41 @@
-//Aziz Önder
-//ADC Excercise
-
+/*
+  Pulsierende LED mit Timer0 PWM.
+  Die LED pulsiert durch kontinuierliches Erhöhen und Verringern des Duty Cycles.
+  Aziz Önder
+  18.05.2025
+*/
 
 #include <Arduino.h>
 
-#define ADC_CHANNEL 0;
-volatile int Poti_Value;
-volatile bool value_ready = false;
-
-void setup() 
+int main()
 {
-  Serial.begin(9600);
+  // Set pin 6 as output (output pin of OC0A)
+  DDRD |= (1 << PD6);
 
-  // enable ADC and set prescaler to 128 -> 125kHz @ 16MHz (best conversion rast is between 50 - 200kHz)
-  ADCSRA |= (1 << ADEN) | (1 << ADIE) | (1 << ADPS2) | (1 << ADPS1) | (1 << ADPS0);
- 
-  // set ADC channel of multiplexer
-  ADMUX = (ADMUX & 0b11110000) | ADC_CHANNEL;
-  
-  // set internal 5V reference
-  ADMUX |= (1 << REFS0);
+  // Select Fast PWM Mode
+  TCCR0A |= (1 << WGM00) | (1 << WGM01);
 
-  sei();
+  // Clear OC0A on compare match
+  TCCR0A |= (1 << COM0A1);
 
-}
+  // Start timer with no prescaler
+  TCCR0B |= (1 << CS00);
 
-void loop() 
-{
-  //int poti_value = analogRead(A0);
-  ADCSRA |= (1 << ADSC);                      // start ADC conversion
-  while((ADCSRA & (1 << ADSC)) != 0);         // ADSC is cleared when conversion is completed
+  int brightness = 0;
+  int direction = 1;
 
-  if(value_ready == true)                     
+  for (;;)
   {
-    value_ready = false;                      // value_ready is set false, so that it can loop
-  float Voltage = (Poti_Value * 5.0) / 1023;
-  Serial.print("Potentiometer analog value = ");
-  Serial.print(Voltage); 
-  Serial.println(" V");
+    // Set duty cycle
+    OCR0A = brightness;
 
-  }
-}
+    // Update brightness for pulsating effect
+    brightness += direction;
+    if (brightness == 0 || brightness == 255) {
+      direction = -direction;
+    }
 
-ISR(ADC_vect)           //Triggers automatically if Interrupt Flag is set
-{
-  static int counter = 0;
-
-  counter++;
-
-  if (counter >= 30)    // Trigger every 500ms
-  {
-    Poti_Value = ADC;            
-    value_ready = true;   // value_ready is set true, so that the programm can loop
+    // delay to control pulse speed
+    _delay_ms(5);
   }
 }
